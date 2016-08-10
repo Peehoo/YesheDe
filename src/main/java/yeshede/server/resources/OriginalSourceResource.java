@@ -27,7 +27,8 @@ public class OriginalSourceResource extends ServerResource {
 	@Get
 	public JsonRepresentation getOriginalSource() throws ClassNotFoundException, SQLException, JSONException {
 		List<OriginalSource> originalSources = dao.getOriginalResources();
-		return new JsonRepresentation(new Gson().toJson(originalSources));
+		Gson gson = GsonSingleton.getGsonInstance();
+		return new JsonRepresentation(gson.toJson(originalSources));
 	}
 
 	@Post("json")
@@ -35,8 +36,8 @@ public class OriginalSourceResource extends ServerResource {
 			throws ClassNotFoundException, SQLException, IOException, JSONException {
 		JsonRepresentation jsonRepresentation = new JsonRepresentation(request);
 		String jsonString = jsonRepresentation.getJsonObject().toString();
-
-		OriginalSource originalSource = new Gson().fromJson(jsonString, OriginalSource.class);
+		Gson gson = GsonSingleton.getGsonInstance();
+		OriginalSource originalSource = gson.fromJson(jsonString, OriginalSource.class);
 		dao.insertOriginalSource(originalSource);
 	}
 }

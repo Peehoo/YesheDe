@@ -6,6 +6,7 @@ import org.restlet.routing.Router;
 
 import yeshede.server.resources.BookResource;
 import yeshede.server.resources.OriginalSourceResource;
+import yeshede.server.resources.TextResource;
 
 public class YeshedeServerApplication extends Application {
 
@@ -14,6 +15,7 @@ public class YeshedeServerApplication extends Application {
         Router router = new Router(getContext());
         router.attach("/originalSources", OriginalSourceResource.class);
         router.attach("/books", BookResource.class);
+        router.attach("/texts", TextResource.class);
         return router;
     }
 

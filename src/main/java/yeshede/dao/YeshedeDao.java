@@ -76,6 +76,7 @@ public class YeshedeDao {
 		return stmt.execute(sql);
 	}
 
+	// getting the Text resource
 	public List<Text> getTextResources() throws ClassNotFoundException, SQLException {
 		Connection conn = MysqlConnector.getConnection();
 		Statement stmt = conn.createStatement();
@@ -95,12 +96,12 @@ public class YeshedeDao {
 		return texts;
 	}
 
+	// inserting the text resource
 	public boolean insertTextResource(Text text) throws ClassNotFoundException, SQLException {
 		Connection conn = MysqlConnector.getConnection();
 		Statement stmt = conn.createStatement();
 		String sql = String.format("insert into text values (%d, \'%s\', \'%s\', %d)", text.getId(), text.getTitle(),
 				text.getAlternateTitles(), text.getAuthorId());
-
 		return stmt.execute(sql);
 	}
 

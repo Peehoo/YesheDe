@@ -1,0 +1,26 @@
+﻿Text 99
+Wylie transliteration: 'phags pa bcom ldan 'das kyi ye shes rgyas pa'i mdo sde rin po che mtha' yas pa mthar phyin pa zhes bya ba theg pa chen po'i mdo/
+Tibetan unicode: ​​​​​​​​​​​​​​​​​​​​​​​​​​​​
+
+Text 100
+'phags pa sangs rgyas thams cad kyi yul la 'jug pa'i ye shes snang ba'i rgyan ces bya ba theg pa chen po'i mdo/
+​​​​​​​​​​​​​​​​​​​​​​​
+
+Text 101
+'phags pa dge ba'i rtsa ba yongs su 'dzin pa zhes bya ba theg pa chen po'i mdo/
+​​​​​​​​​​​​​​​​​
+
+
+
+Notes:
+\x{E12C} is the unicode we use for the Tibetan character called a tsheg. The tsheg character divides syllables.
+Difficultly, Tibetan does not have syntactic marker for word boundaries.
+In the Wylie transliteration spaces ' ' are mapped to tshegs, \x{E12C}.
+
+For the first text above, Lila and I have roughly (and incorrectly) marked the word boundaries with '|' (we don't really know, exactly):
+|'phags pa | bcom ldan 'das | kyi | ye shes | rgyas pa'i | mdo | sde | rin po che | mtha' yas pa | mthar phyin pa | zhes bya ba | theg pa | chen po'i | mdo/
+
+The pa'i is a pa plus a particle. This will require some careful thinking.
+
+
+\x{200B} is a character with no semantic meaning. We use it in InDesign to indicate possible line break points. All matches should disregard the presence or absence of this character.
