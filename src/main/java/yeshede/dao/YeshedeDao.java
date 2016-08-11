@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import yeshede.domain.Book;
 import yeshede.domain.OriginalSource;
@@ -43,10 +44,35 @@ public class YeshedeDao {
 	}
 
 	// getting the Book resource
-	public List<Book> getBookResource() throws ClassNotFoundException, SQLException {
+	public List<Book> getSearchedBookResource(Map<String, String> valuesMap) throws ClassNotFoundException, SQLException {
 		Connection conn = MysqlConnector.getConnection();
 		Statement stmt = conn.createStatement();
-		String sql = "select * from book";
+		String parameters = "";
+		String sql = "";
+		if(!valuesMap.isEmpty()) {
+			String operation = " " + valuesMap.get("operation") + " ";
+			for (Map.Entry<String,String> entry: valuesMap.entrySet()) {
+				if ((entry.getKey().equalsIgnoreCase("title")) || (entry.getKey().equalsIgnoreCase("notes"))) {
+					parameters += entry.getKey() + " LIKE " +  "\'%" + entry.getValue() + "%\'" + operation;
+				}
+				else if (entry.getKey().equalsIgnoreCase("productionYear")) {
+					parameters += "year(" + entry.getKey()  + ")" + "=" + entry.getValue() + operation;
+				}
+				else if (entry.getKey().equalsIgnoreCase("operation")) {
+					continue;
+				}
+				else {
+					parameters += entry.getKey() + "=" + entry.getValue() + operation;
+				}
+			}
+			parameters = parameters.substring(0, parameters.length() - operation.length());
+			parameters += ";";
+			sql = "select * from book where " + parameters;
+		}
+		else {
+			sql = "select * from book;";
+		}
+		System.out.println(sql);
 		ResultSet rs = stmt.executeQuery(sql);
 
 		List<Book> books = new ArrayList<Book>();
@@ -78,10 +104,32 @@ public class YeshedeDao {
 	}
 
 	// getting the Text resource
-	public List<Text> getTextResources() throws ClassNotFoundException, SQLException {
+	public List<Text> getSearchedTextResources(Map<String, String> valuesMap) throws ClassNotFoundException, SQLException {
 		Connection conn = MysqlConnector.getConnection();
 		Statement stmt = conn.createStatement();
-		String sql = "select * from text";
+		String parameters = "";
+		String sql = "";
+		if(!valuesMap.isEmpty()) {
+			String operation = " " + valuesMap.get("operation") + " ";
+			for (Map.Entry<String,String> entry: valuesMap.entrySet()) {
+				if ((entry.getKey().equalsIgnoreCase("title")) || (entry.getKey().equalsIgnoreCase("alternateTitles"))) {
+					parameters += entry.getKey() + " LIKE " +  "\'%" + entry.getValue() + "%\'" + operation;
+				}
+				else if (entry.getKey().equalsIgnoreCase("operation")) {
+					continue;
+				}
+				else {
+					parameters += entry.getKey() + "=" + entry.getValue() + operation;
+				}
+			}
+			parameters = parameters.substring(0, parameters.length() - operation.length());
+			parameters += ";";
+			sql = "select * from text where " + parameters;
+		}
+		else {
+			sql = "select * from text;";
+		}
+		System.out.println(sql);
 		ResultSet rs = stmt.executeQuery(sql);
 
 		List<Text> texts = new ArrayList<Text>();
@@ -105,5 +153,4 @@ public class YeshedeDao {
 				text.getAlternateTitles(), text.getAuthorId());
 		return stmt.execute(sql);
 	}
-
-}
+}	

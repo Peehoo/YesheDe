@@ -2,7 +2,9 @@ package yeshede.server.resources;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONException;
 import org.restlet.ext.json.JsonRepresentation;
@@ -25,7 +27,13 @@ public class TextResource extends ServerResource{
 	
 	@Get
 	public JsonRepresentation getTexts() throws ClassNotFoundException, SQLException {
-		List<Text> texts = dao.getTextResources();
+		Map<String, String> valuesMap = new HashMap<String, String>();
+		valuesMap = getQuery().getValuesMap();
+		
+		for (Map.Entry<String, String> entry : valuesMap.entrySet()) {
+			valuesMap.put(entry.getKey(), entry.getValue().replaceAll("^\"|\"$", ""));
+		}
+		List<Text> texts = dao.getSearchedTextResources(valuesMap);
 		Gson gson = GsonSingleton.getGsonInstance();
 		return new JsonRepresentation(gson.toJson(texts));
 	}
