@@ -2,178 +2,339 @@ drop database if exists yeshe_de;
 create database yeshe_de;
 use yeshe_de;
 
-show tables;
-
-create table original_source 
-(
-id int PRIMARY KEY,
-name varchar(255)
+-- Original Source Table Definition
+drop table if exists original_source;
+CREATE TABLE original_source (
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255),
+    PRIMARY KEY (id)
 );
 
-insert into original_source values  (1, 'Yeshe De');
-select * from original_source;
+insert into original_source (name) values ('Yeshe De');
+SELECT 
+    *
+FROM
+    original_source;
 
-
-create table recipient_location
-(
-id int primary key,
-country varchar(255),
-state varchar(255),
-city varchar(255),
-street_address varchar(255)
+-- Recipient Location Table Definition
+drop table if exists recipient_location;
+CREATE TABLE recipient_location (
+    id INT NOT NULL AUTO_INCREMENT,
+    country VARCHAR(255),
+    state VARCHAR(255),
+    city VARCHAR(255),
+    street_address VARCHAR(255),
+    PRIMARY KEY (id)
 );
 
-insert into recipient_location values (1, 'India', 'Bihar', 'Bodh Gaya', '');
+insert into recipient_location (country, state, city, street_address) values ('India', 'Bihar', 'Bodh Gaya', '');
+SELECT 
+    *
+FROM
+    recipient_location;
 
+-- Recipient Type Table definition
 drop table if exists recipient_type;
 
-create table recipient_type
-(
-id int primary key,
-description varchar(255)
+CREATE TABLE recipient_type (
+    id INT NOT NULL AUTO_INCREMENT,
+    description VARCHAR(255),
+    PRIMARY KEY (id)
 );
 
-insert into recipient_type (id, description) values 
-(0, 'Individual'), 
-(1, 'Monastary'), 
-(2, 'Nunnery')
-;
+insert into recipient_type (description) values 
+('Individual'), 
+('Monastary'), 
+('Nunnery');
 
-create table recipient_name
-(
-id int primary key,
-recipientTypeId int,
-name varchar(255),
-FOREIGN KEY (recipientTypeId) REFERENCES recipient_type(id)
+SELECT 
+    *
+FROM
+    recipient_type;
+
+-- Recipient Name table deifintion
+drop table if exists recipient_name;
+
+CREATE TABLE recipient_name (
+    id INT NOT NULL AUTO_INCREMENT,
+    recipientTypeId INT,
+    name VARCHAR(255),
+    PRIMARY KEY (id),
+    FOREIGN KEY (recipientTypeId)
+        REFERENCES recipient_type (id)
 );
 
-insert into recipient_name (id, recipientTypeId, name) values 
-(0, 0, 'Monk'), 
-(1, 1, 'Kathog'), 
-(2, 2, 'Yachen Gar')
-;
+insert into recipient_name (recipientTypeId, name) values (1, 'Monk'), 
+(2, 'Kathog'), 
+(3, 'Yachen Gar');
 
-select * from recipient_name, recipient_type where recipient_name.recipientTypeId = recipient_type.id and recipient_type.id = 1;
+SELECT 
+    *
+FROM
+    recipient_name;
 
-create table recipient
-(
-id int primary key,
-name varchar(255),
-recipientLocationId int,
-recipientTypeId int,
-notes varchar(255),
-foreign key (recipientLocationId) references recipient_location(id),
-foreign key (recipientTypeId) references recipient_type(id)
+-- Recipient table definition
+drop table if exists recipient;
+
+CREATE TABLE recipient (
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255),
+    recipientLocationId INT,
+    recipientTypeId INT,
+    notes VARCHAR(255),
+    PRIMARY KEY (id),
+    FOREIGN KEY (recipientLocationId)
+        REFERENCES recipient_location (id),
+    FOREIGN KEY (recipientTypeId)
+        REFERENCES recipient_type (id)
 );
 
-create table location /* This can be location of a source or a press plate*/
-(
-id int primary key,
-description varchar(255)    
+insert into recipient (name, recipientLocationId, recipientTypeId, notes) values ('Test', 1, 1, '');
+
+SELECT 
+    *
+FROM
+    recipient;
+
+-- Location table definition
+-- This can be location of a source or a press plate
+drop table if exists location;
+
+CREATE TABLE location (
+    id INT NOT NULL AUTO_INCREMENT,
+    description VARCHAR(255),
+    PRIMARY KEY (id)
 );
 
-create table source
-(
-id int primary key,
-originalSourceId int,
-pages varchar(255),
-bookTitle varchar(255),
-sourceLocationId int,
-immediateSource varchar(255), /* where we got it from */
-foreign key (sourceLocationId) references location(id),
-foreign key (originalSourceId) references original_source(id)
+insert into location (description) values ('test press plate 1');
+
+SELECT 
+    *
+FROM
+    location;    
+ 
+-- Source table definition
+-- immediate source -> where we get it from 
+drop table if exists source;
+
+CREATE TABLE source (
+    id INT NOT NULL AUTO_INCREMENT,
+    originalSourceId INT,
+    pages VARCHAR(255),
+    bookTitle VARCHAR(255),
+    sourceLocationId INT,
+    immediateSource VARCHAR(255),
+    PRIMARY KEY (id),
+    FOREIGN KEY (sourceLocationId)
+        REFERENCES location (id),
+    FOREIGN KEY (originalSourceId)
+        REFERENCES original_source (id)
 );
 
-create table author
-(
-id int primary key,
-name varchar(255),
-birthDate date,
-deathDate date,
-lifetime varchar(255),
-biography varchar(2000)
+insert into source (originalSourceId, pages, bookTitle, sourceLocationId, immediateSource) values 
+	(1, '', 'Test title 1', 1, 'TBRC');
+
+SELECT 
+    *
+FROM
+    source;
+
+
+-- Author table definition
+drop table if exists author;
+
+CREATE TABLE author (
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255),
+    birthDate DATE,
+    deathDate DATE,
+    lifetime VARCHAR(255),
+    biography VARCHAR(2000),
+    PRIMARY KEY (id)
 );
 
-create table book
-(
-id int primary key,
-predecessor int,
-successor int,
-numCopiesPrinted int,
-pressPlateLocationId int,
-productionYear date,
-title varchar(255),
-notes varchar(1000),
-foreign key (pressPlateLocationId) references location(id)
+insert into author (name) values ('Test Author');
+
+SELECT 
+    *
+FROM
+    author;
+
+-- Book table definition
+drop table if exists book;
+
+CREATE TABLE book (
+    id INT NOT NULL AUTO_INCREMENT,
+    predecessor INT,
+    successor INT,
+    numCopiesPrinted INT,
+    pressPlateLocationId INT,
+    productionYear DATE,
+    title VARCHAR(255),
+    notes VARCHAR(1000),
+    PRIMARY KEY (id),
+    FOREIGN KEY (pressPlateLocationId)
+        REFERENCES location (id)
 );
 
-create table category
-(
-id int primary key,
-name varchar(255)
+insert into book (productionYear, title) values (20160103, 'Test Title');
+
+SELECT 
+    *
+FROM
+    book;
+
+-- Category table definition
+drop table if exists category;
+
+CREATE TABLE category (
+    id INT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255),
+    PRIMARY KEY (id)
 );
 
-create table text
-(
-id int primary key,
-title varchar(255),
-alternateTitles varchar(1000),
-authorId int,
-foreign key (authorId) references author(id)
+insert into category (name) values ('spirituality');
+
+SELECT 
+    *
+FROM
+    category;
+    
+-- Text atble definition
+drop table if exists text;
+
+CREATE TABLE text (
+    id INT NOT NULL AUTO_INCREMENT,
+    title VARCHAR(255),
+    alternateTitles VARCHAR(1000),
+    authorId INT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (authorId)
+        REFERENCES author (id)
 );
 
-create table text_category
-(
-categoryId int,
-textId int,
-foreign key (textId) references text(id),
-foreign key (categoryId) references category(id)
+insert into text (title, authorId) values ('Test title 1', 1);
+
+SELECT 
+    *
+FROM
+    text;
+
+-- Text_category table definition
+drop table if exists text_category;
+
+CREATE TABLE text_category (
+    categoryId INT,
+    textId INT,
+    FOREIGN KEY (textId)
+        REFERENCES text (id),
+    FOREIGN KEY (categoryId)
+        REFERENCES category (id)
 );
 
+insert into text_category (categoryId, textId) values (1,1);
 
-create table job
-(
-id int primary key,
-textId int,
-sourceId int,
-foreign key (textId) references text(id),
-foreign key (sourceId) references source(id) 
+SELECT 
+    *
+FROM
+    text_category;
+
+--  job table definition
+drop table if exists job;
+
+CREATE TABLE job (
+    id INT NOT NULL AUTO_INCREMENT,
+    textId INT,
+    sourceId INT,
+    PRIMARY KEY (id),
+    FOREIGN KEY (textId)
+        REFERENCES text (id),
+    FOREIGN KEY (sourceId)
+        REFERENCES source (id)
 );
 
-create table job_file
-(
-id int primary key,
-jobId int,
-filePath varchar(255),
-notes varchar(1000),
-foreign key (jobId) references job(id)
+insert into job (textId, sourceId) values (1,1);
+
+SELECT 
+    *
+FROM
+    job;
+
+-- job_file table definition
+drop table if exists job_file;
+
+CREATE TABLE job_file (
+    id INT NOT NULL AUTO_INCREMENT,
+    jobId INT,
+    filePath VARCHAR(255),
+    notes VARCHAR(1000),
+    PRIMARY KEY (id),
+    FOREIGN KEY (jobId)
+        REFERENCES job (id)
 );
 
-create table book_file
-(
-id int primary key,
-bookId int,
-filePath varchar(255),
-notes varchar(1000),
-foreign key (bookId) references book(id)
+insert into job_file (jobId, filePath, notes) values (1, 'c:/testPath', '');
+
+SELECT 
+    *
+FROM
+    job_file;
+
+-- book_file table defintion
+drop table if exists book_file;
+
+CREATE TABLE book_file (
+    id INT NOT NULL AUTO_INCREMENT,
+    bookId INT,
+    filePath VARCHAR(255),
+    notes VARCHAR(1000),
+    PRIMARY KEY (id),
+    FOREIGN KEY (bookId)
+        REFERENCES book (id)
 );
 
-create table source_file
-(
-id int primary key,
-sourceId int,
-filePath varchar(255),
-notes varchar(1000),
-foreign key (sourceId) references source(id)
+insert into book_file (bookId, filePath, notes) values (1, 'C:/testPath', '');
+
+SELECT 
+    *
+FROM
+    book_file;
+
+-- source_file table definition
+drop table if exists source_file;
+
+CREATE TABLE source_file (
+    id INT NOT NULL AUTO_INCREMENT,
+    sourceId INT,
+    filePath VARCHAR(255),
+    notes VARCHAR(1000),
+    PRIMARY KEY (id),
+    FOREIGN KEY (sourceId)
+        REFERENCES source (id)
 );
 
-create table text_book
-(
-textId int,
-bookId int,
-foreign key (textId) references text(id),
-foreign key (bookId) references book(id)
+insert into source_file (sourceId, filePath, notes) values (1, 'c:/testPath', '');
+
+SELECT 
+    *
+FROM
+    source_file;
+
+-- text_book table definition
+drop table if exists text_book;
+
+CREATE TABLE text_book (
+    textId INT,
+    bookId INT,
+    FOREIGN KEY (textId)
+        REFERENCES text (id),
+    FOREIGN KEY (bookId)
+        REFERENCES book (id)
 );
 
+insert into text_book (textId, bookId) values (1,1);
 
-
+SELECT 
+    *
+FROM
+    text_book;

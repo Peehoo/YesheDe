@@ -1,6 +1,7 @@
 package yeshede.domain;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 public class Book {
 	private int id;
@@ -59,6 +60,10 @@ public class Book {
 	}
 	public void setNotes(String notes) {
 		this.notes = notes;
+	}
+	public String getProductionYearAsString() {
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+		return formatter.format(this.productionYear);
 	}
 }
 

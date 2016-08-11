@@ -70,9 +70,10 @@ public class YeshedeDao {
 	public boolean insertBookResource(Book book) throws ClassNotFoundException, SQLException {
 		Connection conn = MysqlConnector.getConnection();
 		Statement stmt = conn.createStatement();
-		String sql = String.format("insert into book values (%d, %d, %d, %d, %d, %tD, \'%s\', \'%s\')", book.getId(),
+		String sql = String.format("insert into book values (%d, %d, %d, %d, %d, \'%s\', \'%s\', \'%s\')", book.getId(),
 				book.getPredecessorId(), book.getSuccessorId(), book.getNumCopiesPrinted(),
-				book.getPressPlateLocationId(), book.getProductionYear(), book.getTitle(), book.getNotes());
+				book.getPressPlateLocationId(), book.getProductionYearAsString(), book.getTitle(), book.getNotes());
+		System.out.println(sql);
 		return stmt.execute(sql);
 	}
 
