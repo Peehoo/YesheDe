@@ -7,7 +7,8 @@ drop table if exists original_source;
 CREATE TABLE original_source (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(255),
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    UNIQUE KEY (name)
 );
 
 insert into original_source (name) values ('Yeshe De');
@@ -16,22 +17,6 @@ SELECT
 FROM
     original_source;
 
--- Recipient Location Table Definition
-drop table if exists recipient_location;
-CREATE TABLE recipient_location (
-    id INT NOT NULL AUTO_INCREMENT,
-    country VARCHAR(255),
-    state VARCHAR(255),
-    city VARCHAR(255),
-    street_address VARCHAR(255),
-    PRIMARY KEY (id)
-);
-
-insert into recipient_location (country, state, city, street_address) values ('India', 'Bihar', 'Bodh Gaya', '');
-SELECT 
-    *
-FROM
-    recipient_location;
 
 -- Recipient Type Table definition
 drop table if exists recipient_type;
@@ -39,7 +24,8 @@ drop table if exists recipient_type;
 CREATE TABLE recipient_type (
     id INT NOT NULL AUTO_INCREMENT,
     description VARCHAR(255),
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    UNIQUE KEY (description)
 );
 
 insert into recipient_type (description) values 
@@ -52,44 +38,25 @@ SELECT
 FROM
     recipient_type;
 
--- Recipient Name table deifintion
-drop table if exists recipient_name;
-
-CREATE TABLE recipient_name (
-    id INT NOT NULL AUTO_INCREMENT,
-    recipientTypeId INT,
-    name VARCHAR(255),
-    PRIMARY KEY (id),
-    FOREIGN KEY (recipientTypeId)
-        REFERENCES recipient_type (id)
-);
-
-insert into recipient_name (recipientTypeId, name) values (1, 'Monk'), 
-(2, 'Kathog'), 
-(3, 'Yachen Gar');
-
-SELECT 
-    *
-FROM
-    recipient_name;
-
 -- Recipient table definition
 drop table if exists recipient;
 
 CREATE TABLE recipient (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(255),
-    recipientLocationId INT,
+    country VARCHAR(255),
+    state VARCHAR(255),
+    city VARCHAR(255),
+    street_address VARCHAR(255),
     recipientTypeId INT,
     notes VARCHAR(255),
     PRIMARY KEY (id),
-    FOREIGN KEY (recipientLocationId)
-        REFERENCES recipient_location (id),
     FOREIGN KEY (recipientTypeId)
         REFERENCES recipient_type (id)
 );
 
-insert into recipient (name, recipientLocationId, recipientTypeId, notes) values ('Test', 1, 1, '');
+insert into recipient (name, country, state, city, street_address, recipientTypeId, notes) values 
+('Test', 'India', 'Bihar', 'Bodh Gaya', '',  1, '');
 
 SELECT 
     *
@@ -103,10 +70,12 @@ drop table if exists location;
 CREATE TABLE location (
     id INT NOT NULL AUTO_INCREMENT,
     description VARCHAR(255),
+    UNIQUE KEY (description),
     PRIMARY KEY (id)
 );
 
 insert into location (description) values ('test press plate 1');
+insert into location (description) values ('test press plate 2');
 
 SELECT 
     *
@@ -190,7 +159,8 @@ drop table if exists category;
 CREATE TABLE category (
     id INT NOT NULL AUTO_INCREMENT,
     name VARCHAR(255),
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    UNIQUE KEY (name)
 );
 
 insert into category (name) values ('spirituality');
@@ -205,7 +175,7 @@ drop table if exists text;
 
 CREATE TABLE text (
     id INT NOT NULL AUTO_INCREMENT,
-    title VARCHAR(255),
+    title VARCHAR(1000),
     alternateTitles VARCHAR(1000),
     authorId INT,
     PRIMARY KEY (id),

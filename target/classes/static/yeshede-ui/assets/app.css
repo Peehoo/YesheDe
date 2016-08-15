@@ -1,0 +1,54 @@
+html, body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+
+/* Toolbar area */
+
+.menu {
+  background-color: transparent;
+  border: none;
+  height: 38px;
+  margin: 16px;
+  width: 36px;
+}
+
+md-toolbar h1 {
+  margin: auto;
+}
+
+.yeshede {
+  background: #EEEEEE;
+  font-weight: NORMAL_FONT_WEIGHT;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.add-book {
+  width: 75%;
+  position: relative;
+  min-height: 450px;
+  margin: 0;
+}
+
+.autocomplete-custom-template li {
+  border-bottom: 1px solid #ccc;
+  height: auto;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  white-space: normal; }
+.autocomplete-custom-template li:last-child {
+  border-bottom-width: 0; }
+.autocomplete-custom-template .item-title,
+.autocomplete-custom-template .item-metadata {
+  display: block;
+  line-height: 2; }
+.autocomplete-custom-template .item-title md-icon {
+  height: 18px;
+  width: 18px; }
+  
+  .ui-state-highlight {
+  background-color:#bd
+  }

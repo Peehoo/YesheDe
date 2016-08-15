@@ -1,0 +1,37 @@
+<div ng-controller="SearchCtrl as ctrl" layout = "column" flex layout-align="center center">
+	<h2 style="padding-bottom:20px">Search for a book or a text</h2>
+	<form flex layout-align="center center" style="width:75%">
+		<md-autocomplete 
+		    layout-align="center center"
+			md-selected-item="ctrl.selectedItem"
+			md-search-text-change="ctrl.searchTextChange(ctrl.searchText)"
+			md-search-text="ctrl.searchText"
+			md-selected-item-change="ctrl.selectedItemChange(item)"
+			md-items="book in ctrl.querySearch(ctrl.searchText)"
+			md-item-text="book.title" md-min-length="0"
+			placeholder="Search for a book or text"
+			md-menu-class="autocomplete-custom-template"
+			flex>
+			<md-item-template>
+				<span class="item-title"> 
+					<md-icon
+						md-svg-icon="book">
+					</md-icon>
+					Title:
+					<search-result-template string = "book.title"
+										query = "ctrl.searchText">
+					</search-result-template> 
+				</span> 
+				<span class="item-metadata"> <span class="item-metastat">
+					Author:
+					<search-result-template string= "book.author"
+										query = "ctrl.searchText">
+					</search-result-template> 
+				</span> 
+				<span class="item-metastat"> Year: <strong>{{book.publicationYear}}</strong>
+				</span>
+				</span> 
+			</md-item-template>
+		</md-autocomplete>
+	</form>
+</div>

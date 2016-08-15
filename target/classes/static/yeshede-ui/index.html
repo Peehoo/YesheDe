@@ -1,0 +1,124 @@
+    <!DOCTYPE html>
+    <html>
+    <head lang="en">
+      <title>Yeshde</title>
+
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="description" content="">
+      <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no"/>
+
+      <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Roboto:400,500,700,400italic'>
+      <link rel="stylesheet" href="./bower_components/angular-material/angular-material.css"/>
+      <link rel="stylesheet" href="assets/app.css"/>
+      <link href="bower_components/mdi/css/materialdesignicons.min.css" rel="stylesheet" type="text/css"/>
+
+    </head>
+    <body ng-app="starterApp" layout="column" ng-controller="AppCtrl as appCtrl" style="background: #eee;">
+
+    <md-sidenav class="md-sidenav-left md-whiteframe-z2"
+        md-component-id="left">
+      
+      <md-toolbar layout="row">
+       <div class="md-toolbar-tools">
+          <h2>
+            <span>Menu</span>
+          </h2>
+          <span flex></span>
+          <md-button class="md-icon-button"
+                     aria-label="Close Side Panel"
+                     ng-click="appCtrl.closeSidenav()">
+            <md-tooltip>Close Side Panel</md-tooltip>
+            <md-icon md-svg-icon="close"></md-icon>
+          </md-button>
+        </div>
+      </md-toolbar>
+
+      <md-content layout-padding="">
+      <md-list>
+        <md-list-item layout="column">
+            <md-button flex ng-click="appCtrl.navigate('search')">
+              <md-icon md-svg-icon="search" style="padding:20px;">
+              </md-icon>
+              Search for a book or text
+            </md-button>
+        </md-list-item>
+
+        <md-list-item>
+          <md-button flex ng-click="appCtrl.navigate('addbook')">
+              <md-icon md-svg-icon="search" style="padding:20px;">
+              </md-icon>
+              Add a book
+          </md-button>
+        </md-list-item>
+
+        <md-list-item>
+          <md-button flex ng-click="appCtrl.navigate('addtext')">
+              <md-icon md-svg-icon="search" style="padding:20px;">
+              </md-icon>
+              Add a text
+          </md-button>
+        </md-list-item>
+       </md-list>
+      </md-content> 
+    </md-sidenav>
+
+    <md-content>
+    <div layout="column" ng-cloak>
+      
+      <md-toolbar layout="row" class="md-toolbar-tools" ng-controller="SidenavCtrl as sidenavCtrl">
+        <md-button class="md-icon-button" aria-label="Side Panel" ng-click="sidenavCtrl.openSideNavPanel()">
+         <md-tooltip>Side Panel</md-tooltip>
+         <md-icon md-svg-icon="menu"></md-icon>
+        </md-button>
+
+        <div flex></div>
+        <div layout="row" class="fill-height">
+          <h1 class="md-toolbar-item md-breadcrumb md-headline">
+            Yeshe De Tibetan Text Preservation Project
+          </h1>
+          <span flex></span>
+        </div>
+        <div flex> </div>
+      </md-toolbar>
+
+      <div ng-if="appCtrl.currentPage === 'addbook'"
+           ng-include src="'pages/addbook.html'" 
+           layout="row"
+           class="yeshede">
+      </div>
+
+      <div ng-if="appCtrl.currentPage === 'search'" 
+           ng-include src="'pages/search.html'"
+           layout="row" class="yeshede">
+      </div>
+
+
+    </md-content>
+
+    <script src="./bower_components/lodash/lodash.min.js"></script>
+
+    <script src="./bower_components/angular/angular.js"></script>
+    <script src="./bower_components/angular-messages/angular-messages.js"></script>
+    <script src="./bower_components/angular-animate/angular-animate.js"></script>
+    <script src="./bower_components/angular-aria/angular-aria.js"></script>
+    <script src="./bower_components/angular-material/angular-material.js"></script>
+    <script src="./bower_components/angular-route/angular-route.min.js"></script>
+
+    <script src="./src/app.js"></script>
+
+    <script src="./src/app/MixpanelService.js"></script>
+    <script src="./src/app/NotificationsService.js"></script>
+    <script src="./src/app/AppCtrl.js"></script>
+
+    <script src="./src/contacts/ContactsService.js"></script>
+    <script src="./src/contacts/ContactsCtrl.js"></script>
+    <script src="./src/sidenav/SidenavCtrl.js"></script>
+    <script src="./src/book/InsertBookCtrl.js"> </script>
+    <script src="./src/search/SearchCtrl.js"> </script>
+
+    <script src="./src/ext/ga.js"></script>
+    <script src="./src/ext/mixpanel.js"></script>
+
+    </body>
+    </html>

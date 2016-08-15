@@ -8,7 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.mysql.fabric.xmlrpc.base.Array;
+
 import yeshede.domain.Book;
+import yeshede.domain.Location;
 import yeshede.domain.OriginalSource;
 import yeshede.domain.Text;
 
@@ -152,5 +155,23 @@ public class YeshedeDao {
 		String sql = String.format("insert into text values (%d, \'%s\', \'%s\', %d)", text.getId(), text.getTitle(),
 				text.getAlternateTitles(), text.getAuthorId());
 		return stmt.execute(sql);
+	}
+
+	public List<Location> getLocations() throws ClassNotFoundException, SQLException {
+		Connection conn = MysqlConnector.getConnection();
+		Statement stmt = conn.createStatement();
+		
+		List<Location> locations = new ArrayList<Location>();
+		
+		String sql = "select * from location;";
+		ResultSet rs = stmt.executeQuery(sql);
+		
+		while (rs.next()) {
+			Location location = new Location();
+			location.setId(rs.getInt("id"));
+			location.setDescription(rs.getString("description"));
+			locations.add(location);
+		}
+		return locations;
 	}
 }	
