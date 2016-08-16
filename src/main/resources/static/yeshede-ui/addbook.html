@@ -1,0 +1,57 @@
+<div flex layout="column"
+                  layout-align="center center"
+                  flex-direction="row">
+          <div flex style="width:75%">
+            <h2> Add a new book in YesheDe database</h2>
+          </div>
+          <div flex style="width:75%" ng-controller="InsertBookCtrl as insertBookCtrl">
+            <md-card class="add-book" flex>
+              <md-card-content>
+                <ng-form name="requestForm">
+                  <md-input-container class="md-block">
+                    <label>Title of Book</label>
+                    <input ng-model="insertBookCtrl.book.title">
+                  </md-input-container>
+
+                  <div layout = "row">
+                    <div layout = "column">
+                      Select Production Year
+                      <md-datepicker ng-model="insertBookCtrl.book.productionYear">
+                      </md-datepicker>
+                    </div>
+                    <div flex-offset=10 flex>
+                      <md-input-container class="md-block">
+                        <label>Number of copies printed</label>
+                        <input ng-model="insertBookCtrl.book.numCopies">
+                      </md-input-container>
+                    </div>
+                  </div>
+                  <md-input-container class="md-block">
+                    <label>Press Plate Location</label>
+                    <input ng-model="insertBookCtrl.book.pressPlateLocation">
+                  </md-input-container>
+
+                  <md-select ng-model="insertBookCtrl.book.pressPlateLocationId">
+                    <md-option ng-repeat="location in insertBookCtrl.locations" value="{{location.id}}">
+                      {{location.description}}
+                    </md-option>
+                  </md-select>
+
+                  <md-input-container class="md-block">
+                    <label>Add texts in the book</label>
+                    <input ng-model="insertBookCtrl.book.text">
+                  </md-input-container>
+                </ng-form>
+              </md-card-content>
+            </md-card>
+
+            <div flex style="width:75%" layout="row">
+              <md-button class="md-accent md-raised primary" 
+                         flex
+                         ng-click="insertBookCtrl.insertBook()">
+                Add Book
+              </md-button>
+            </div>
+          </div>
+
+        </div>
